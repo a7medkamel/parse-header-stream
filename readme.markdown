@@ -2,6 +2,8 @@
 
 parse http or smtp headers from a stream
 
+[![build status](https://secure.travis-ci.org/substack/parse-header-stream.png)](http://travis-ci.org/substack/parse-header-stream)
+
 # example
 
 ``` js
