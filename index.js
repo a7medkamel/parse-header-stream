@@ -31,6 +31,9 @@ module.exports = function (opts, cb) {
         }
         else if (m = /^(\S+)\s*:\s*(.+)/.exec(line)) {
             var key = m[1], value = m[2];
+            if (!opts.preserveCase) {
+                key = key.toLowerCase();
+            }
             headers[key] = value;
             stream.emit('header', key, value);
         }
