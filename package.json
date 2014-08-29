@@ -1,5 +1,5 @@
 {
-  "name": "header-stream",
+  "name": "parse-header-stream",
   "version": "1.0.0",
   "description": "parse http or smtp headers from a stream",
   "main": "index.js",
@@ -18,9 +18,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/substack/header-stream.git"
+    "url": "git://github.com/substack/parse-header-stream.git"
   },
-  "homepage": "https://github.com/substack/header-stream",
+  "homepage": "https://github.com/substack/parse-header-stream",
   "keywords": [
     "parse",
     "http",

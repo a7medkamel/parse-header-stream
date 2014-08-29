@@ -1,11 +1,11 @@
-# header-stream
+# parse-header-stream
 
 parse http or smtp headers from a stream
 
 # example
 
 ``` js
-var parse = require('header-stream');
+var parse = require('parse-header-stream');
 
 process.stdin.pipe(parse(function (err, headers) {
     console.log(headers);
@@ -72,7 +72,7 @@ produces:
 # methods
 
 ``` js
-var parser = require('header-stream')
+var parser = require('parse-header-stream')
 ```
 
 ## var stream = parser(opts={}, cb)
@@ -101,7 +101,7 @@ As each header is parsed, this event fires with the `key` and `value` strings.
 With [npm](https://npmjs.org) do:
 
 ```
-npm install header-stream
+npm install parse-header-stream
 ```
 
 # license
