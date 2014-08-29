@@ -14,7 +14,9 @@ module.exports = function (opts, cb) {
     var headers = {};
     var parsed = false;
     
-    stream.pipe(through(function (buf, enc, next) {
+    stream.pipe(through(write, end));
+    
+    function write (buf, enc, next) {
         if (parsed) return next();
         
         len += buf.length;
@@ -38,7 +40,11 @@ module.exports = function (opts, cb) {
             stream.emit('header', key, value);
         }
         next();
-    }));
+    }
+    function end () {
+        if (!parsed) write(new Buffer(0), 'binary', function () {});
+        this.push(null);
+    }
     
     if (cb) {
         stream.once('headers', function (h) { cb(null, h) });
