@@ -14,6 +14,6 @@ test('no break', function (t) {
     });
     w.write('foo: 111\r\n');
     w.write('bar: 222\r\n');
-    w.write('baz: 333\r\n');
+    w.write('baz: 333');
     w.end();
 });
