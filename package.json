@@ -1,0 +1,42 @@
+{
+  "name": "header-stream",
+  "version": "1.0.0",
+  "description": "parse http or smtp headers from a stream",
+  "main": "index.js",
+  "dependencies": {
+    "brfs": "~1.2.0",
+    "split": "~0.3.0",
+    "through2": "~1.1.1"
+  },
+  "devDependencies": {
+    "tape": "^2.13.2",
+    "covert": "^1.0.0"
+  },
+  "scripts": {
+    "test": "tape test/*.js",
+    "coverage": "(cd test; covert *.js)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/substack/header-stream.git"
+  },
+  "homepage": "https://github.com/substack/header-stream",
+  "keywords": [
+    "parse",
+    "http",
+    "smtp",
+    "email",
+    "header",
+    "lines",
+    "key",
+    "value",
+    "stream",
+    "streaming"
+  ],
+  "author": {
+    "name": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net"
+  },
+  "license": "MIT"
+}
