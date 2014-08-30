@@ -4,11 +4,11 @@
   "description": "parse http or smtp headers from a stream",
   "main": "index.js",
   "dependencies": {
-    "brfs": "~1.2.0",
     "split": "~0.3.0",
     "through2": "~1.1.1"
   },
   "devDependencies": {
+    "brfs": "~1.2.0",
     "tape": "^2.13.2",
     "covert": "^1.0.0"
   },
