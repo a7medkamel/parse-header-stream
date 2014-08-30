@@ -1,6 +1,6 @@
 {
   "name": "parse-header-stream",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "parse http or smtp headers from a stream",
   "main": "index.js",
   "dependencies": {
