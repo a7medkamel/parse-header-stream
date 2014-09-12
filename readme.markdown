@@ -98,6 +98,11 @@ As each header is parsed, this event fires with the `key` and `value` strings.
 
 ## stream.on('headers', function (headers) {})
 
+## stream.on('body', function (body) {})
+
+After the header is parsed, the 'body' event fires with `body`, a stream with
+all the raw data after the header.
+
 # install
 
 With [npm](https://npmjs.org) do:
