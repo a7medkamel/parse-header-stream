@@ -1,2 +1,5 @@
 var parse = require('../');
-process.stdin.pipe(parse()).on('body', console.log);
+var p = process.stdin.pipe(parse());
+p.on('body', function (body) {
+    body.pipe(process.stdout);
+});

@@ -6,6 +6,8 @@ parse http or smtp headers from a stream
 
 # example
 
+## header example
+
 ``` js
 var parse = require('parse-header-stream');
 
@@ -69,6 +71,41 @@ produces:
   'content-type': 'text/plain; charset=UTF-8',
   date: 'Fri, 29 Aug 2014 10:49:08 GMT',
   connection: 'keep-alive' }
+```
+
+## body example
+
+You can also strip the leading headers by listening for the `'body'` event:
+
+``` js
+var parse = require('parse-header-stream');
+var p = process.stdin.pipe(parse());
+p.on('body', function (body) {
+    body.pipe(process.stdout);
+});
+```
+
+Given this email data:
+
+```
+Date: 23 Oct 81 11:22:33
+From: SMTP@HOSTY.ARPA
+To: JOE@HOSTW.ARPA
+Subject: Mail System Problem
+
+Sorry JOE, your message to SAM@HOSTZ.ARPA lost.
+
+HOSTZ.ARPA said this:
+ "550 No Such User"
+```
+
+Produces this output:
+
+```
+Sorry JOE, your message to SAM@HOSTZ.ARPA lost.
+
+HOSTZ.ARPA said this:
+ "550 No Such User"
 ```
 
 # methods
