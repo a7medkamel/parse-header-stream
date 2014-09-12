@@ -1,5 +1,5 @@
-var split = require('split');
 var through = require('through2');
+var Readable = require('readable-stream').Readable;
 
 module.exports = function (opts, cb) {
     if (!opts) opts = {};
@@ -7,28 +7,59 @@ module.exports = function (opts, cb) {
         cb = opts;
         opts = {};
     }
-    var len = 0;
-    var stream = split(undefined, undefined, {
-        maxLength: opts.maxLength
-    });
+    var hlen = 0;
     var headers = {};
     var parsed = false;
+    var body = null;
+    var prev = null;
     
-    stream.pipe(through(write, end));
+    var stream = through(write, end);
+    if (cb) {
+        stream.once('headers', function (h, meta) { cb(null, h, meta) });
+        stream.once('error', cb);
+    }
+    return stream;
     
     function write (buf, enc, next) {
-        if (parsed) return next();
-        
-        len += buf.length + 1;
-        if (opts.maxLength && len > opts.maxLength) {
-            stream.emit('error', new Error('too much header data'));
+        if (parsed) {
+            if (body) body.push(buf);
+            return next();
         }
         
-        var line = buf.toString('utf8').replace(/\r$/);
+        if (prev) buf = Buffer.concat([ prev, buf ]);
+        hlen += buf.length + 1;
+        
+        if (opts.maxLength && hlen > opts.maxLength) {
+            return stream.emit('error', new Error('too much header data'));
+        }
+        
+        var last = 0;
+        for (var i = 0; i < buf.length; i++) {
+            if (parsed) break;
+            if (buf[i] !== 10) continue;
+            online(buf.slice(last, i));
+            last = i + 1;
+        }
+        
+        if (parsed) {
+            prev = null;
+            if (stream.listeners('body').length > 0) {
+                body = new Readable;
+                body._read = function () {};
+                body.push(buf.slice(last, buf.length));
+                stream.emit('body', body);
+            }
+        }
+        else prev = buf.slice(last, buf.length);
+        next();
+    }
+    
+    function online (buf) {
+        var line = buf.toString('utf8').replace(/\r$/, '');
         var m;
         if (line === '') {
             parsed = true;
-            stream.emit('headers', headers, { size: len });
+            stream.emit('headers', headers, { size: hlen });
             headers = undefined;
         }
         else if (m = /^(\S+)\s*:\s*(.+)/.exec(line)) {
@@ -39,16 +70,10 @@ module.exports = function (opts, cb) {
             headers[key] = value;
             stream.emit('header', key, value);
         }
-        next();
     }
     function end () {
         if (!parsed) write(new Buffer(0), 'binary', function () {});
         this.push(null);
+        if (body) body.push(null);
     }
-    
-    if (cb) {
-        stream.once('headers', function (h, meta) { cb(null, h, meta) });
-        stream.once('error', cb);
-    }
-    return stream;
 };
