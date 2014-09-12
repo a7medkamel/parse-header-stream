@@ -72,7 +72,10 @@ module.exports = function (opts, cb) {
         }
     }
     function end () {
-        if (!parsed) write(new Buffer(0), 'binary', function () {});
+        if (!parsed) {
+            if (prev) online(prev);
+            online(new Buffer(0));
+        }
         this.push(null);
         if (body) body.push(null);
     }
