@@ -19,7 +19,7 @@ module.exports = function (opts, cb) {
     function write (buf, enc, next) {
         if (parsed) return next();
         
-        len += buf.length;
+        len += buf.length + 1;
         if (opts.maxLength && len > opts.maxLength) {
             stream.emit('error', new Error('too much header data'));
         }
@@ -28,7 +28,7 @@ module.exports = function (opts, cb) {
         var m;
         if (line === '') {
             parsed = true;
-            stream.emit('headers', headers);
+            stream.emit('headers', headers, { size: len });
             headers = undefined;
         }
         else if (m = /^(\S+)\s*:\s*(.+)/.exec(line)) {
@@ -47,7 +47,7 @@ module.exports = function (opts, cb) {
     }
     
     if (cb) {
-        stream.once('headers', function (h) { cb(null, h) });
+        stream.once('headers', function (h, meta) { cb(null, h, meta) });
         stream.once('error', cb);
     }
     return stream;
