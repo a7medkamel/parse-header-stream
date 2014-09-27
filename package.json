@@ -4,6 +4,7 @@
   "description": "parse http or smtp headers from a stream",
   "main": "index.js",
   "dependencies": {
+    "readable-stream": "^1.0.32",
     "split": "~0.3.0",
     "through2": "~1.1.1"
   },
