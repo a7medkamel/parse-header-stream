@@ -70,7 +70,7 @@ module.exports = function (opts, cb) {
             headers[key] = value;
             stream.emit('header', key, value);
         }
-        else if (m = /^HTTP\/(.+)\s(\d+)\s(.+)$/.exec(line)) {
+        else if (m = /^HTTP\/(.*)\s(\d+)\s(.+)$/.exec(line)) {
             var ver = m[1], code = m[2], text = m[3];
             stream.emit('http', { version : ver, code : code, text : text });
         }
